@@ -139,10 +139,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setAuthError(null);
     try {
       await signInWithPopup(auth, googleAuthProvider);
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : 'Unable to complete Google sign-in.';
-      setAuthError(message);
+    } catch (err: unknown) {
+      const code =
+        typeof err === 'object' && err !== null && 'code' in err
+          ? String((err as { code?: unknown }).code)
+          : '';
+      if (code === 'auth/unauthorized-domain') {
+        const host = typeof window !== 'undefined' ? window.location.hostname : 'this domain';
+        const projectId = auth.app.options.projectId || 'your Firebase project';
+        setAuthError(
+          `Domain "${host}" is not authorized for Google Sign-In. Add "${host}" in Firebase Console → Project "${projectId}" → Authentication → Settings → Authorized domains.`
+        );
+      } else if (code === 'auth/popup-blocked') {
+        setAuthError(
+          'Your browser blocked the Google Sign-In popup. Please allow popups for this site and try again.'
+        );
+      } else if (code === 'auth/popup-closed-by-user') {
+        setAuthError('Sign-in was cancelled before completing authentication.');
+      } else {
+        const message =
+          err instanceof Error ? err.message : 'Unable to complete Google sign-in.';
+        setAuthError(message);
+      }
     } finally {
       setSigningIn(false);
     }
