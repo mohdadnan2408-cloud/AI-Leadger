@@ -1,0 +1,278 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Private preferences and ledger settings for an authenticated user.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the user.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User display name for ledger personalization.",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "currency": {
+          "type": "string",
+          "description": "Preferred ISO currency code.",
+          "enum": ["INR", "USD", "EUR"],
+          "maxLength": 3
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server last update timestamp."
+        }
+      },
+      "required": ["uid", "displayName", "currency", "createdAt", "updatedAt"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "An income or expense category owned by a user.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner Firebase Auth UID.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "name": {
+          "type": "string",
+          "description": "Category display name.",
+          "minLength": 1,
+          "maxLength": 48
+        },
+        "type": {
+          "type": "string",
+          "description": "Whether this category classifies income or expenses.",
+          "enum": ["income", "expense"],
+          "maxLength": 10
+        },
+        "color": {
+          "type": "string",
+          "description": "Hex color swatch for charts and markers.",
+          "minLength": 7,
+          "maxLength": 7,
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "monthlyBudget": {
+          "type": "number",
+          "description": "Optional monthly budget target (0 if unset)."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server last update timestamp."
+        }
+      },
+      "required": ["userId", "name", "type", "color", "monthlyBudget", "createdAt", "updatedAt"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "A personal income or expense transaction entry.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner Firebase Auth UID.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "type": {
+          "type": "string",
+          "description": "Transaction direction.",
+          "enum": ["income", "expense"],
+          "maxLength": 10
+        },
+        "amount": {
+          "type": "number",
+          "description": "Positive monetary amount."
+        },
+        "categoryId": {
+          "type": "string",
+          "description": "Referenced category document ID.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "categoryName": {
+          "type": "string",
+          "description": "Category name snapshot at entry time.",
+          "minLength": 1,
+          "maxLength": 48
+        },
+        "description": {
+          "type": "string",
+          "description": "Short ledger description or merchant.",
+          "minLength": 1,
+          "maxLength": 140
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional supplementary memo.",
+          "minLength": 0,
+          "maxLength": 400
+        },
+        "date": {
+          "type": "string",
+          "description": "Transaction date in YYYY-MM-DD format.",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "monthKey": {
+          "type": "string",
+          "description": "Month partition key in YYYY-MM format.",
+          "minLength": 7,
+          "maxLength": 7,
+          "pattern": "^\\d{4}-\\d{2}$"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "description": "Method of payment or deposit.",
+          "enum": ["Bank Transfer", "Credit Card", "Debit Card", "Cash", "Digital Wallet", "Other"],
+          "maxLength": 32
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server last update timestamp."
+        }
+      },
+      "required": [
+        "userId",
+        "type",
+        "amount",
+        "categoryId",
+        "categoryName",
+        "description",
+        "notes",
+        "date",
+        "monthKey",
+        "paymentMethod",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "MonthlyReport": {
+      "title": "MonthlyReport",
+      "description": "Archived monthly financial report snapshot.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner Firebase Auth UID.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "monthKey": {
+          "type": "string",
+          "description": "Month key in YYYY-MM format.",
+          "minLength": 7,
+          "maxLength": 7,
+          "pattern": "^\\d{4}-\\d{2}$"
+        },
+        "title": {
+          "type": "string",
+          "description": "Report title.",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "totalIncome": {
+          "type": "number",
+          "description": "Total monthly income."
+        },
+        "totalExpenses": {
+          "type": "number",
+          "description": "Total monthly expenses."
+        },
+        "netSavings": {
+          "type": "number",
+          "description": "Net surplus or deficit for the month."
+        },
+        "transactionCount": {
+          "type": "number",
+          "description": "Count of transactions included in report."
+        },
+        "topCategory": {
+          "type": "string",
+          "description": "Highest-spend expense category for the month.",
+          "minLength": 0,
+          "maxLength": 48
+        },
+        "summaryNote": {
+          "type": "string",
+          "description": "User or system summary note.",
+          "minLength": 0,
+          "maxLength": 500
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server last update timestamp."
+        }
+      },
+      "required": [
+        "userId",
+        "monthKey",
+        "title",
+        "totalIncome",
+        "totalExpenses",
+        "netSavings",
+        "transactionCount",
+        "topCategory",
+        "summaryNote",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private user profile and currency settings."
+    },
+    "/categories/{categoryId}": {
+      "schema": { "$ref": "#/entities/Category" },
+      "description": "User-owned income and expense categories."
+    },
+    "/transactions/{transactionId}": {
+      "schema": { "$ref": "#/entities/Transaction" },
+      "description": "User-owned income and expense ledger entries."
+    },
+    "/monthlyReports/{reportId}": {
+      "schema": { "$ref": "#/entities/MonthlyReport" },
+      "description": "User-owned saved monthly report snapshots."
+    }
+  }
+}

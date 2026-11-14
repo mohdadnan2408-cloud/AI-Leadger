@@ -1,0 +1,8 @@
+{
+  "name": "Aurelia Ledger",
+  "description": "A sophisticated personal expense tracker with income and expense logging, smart categorization, and monthly financial reports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

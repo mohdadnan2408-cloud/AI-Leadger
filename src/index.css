@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #F8FAFC;
+    color: #0B1D3A;
+    letter-spacing: 0.005em;
+  }
+
+  h1, h2, .font-editorial {
+    font-family: var(--font-display);
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Crisp Navy & Slate Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0B1D3A;
+}
+
+/* Clean Print Styling for Monthly Reports */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #0B1D3A !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-surface {
+    background: #FFFFFF !important;
+    color: #0B1D3A !important;
+    border-color: #CBD5E1 !important;
+    box-shadow: none !important;
+  }
+
+  .print-text-dark {
+    color: #0B1D3A !important;
+  }
+
+  .print-text-muted {
+    color: #475569 !important;
+  }
+}
