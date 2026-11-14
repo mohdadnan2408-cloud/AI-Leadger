@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { AnimatePresence, motion, MotionConfig } from 'motion/react';
+import { Analytics } from '@vercel/analytics/react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { useLedgerData, CategoryInput, TransactionInput } from './hooks/useLedgerData';
 import { AuthGate } from './components/AuthGate';
@@ -231,6 +232,7 @@ export default function App() {
       <AuthProvider>
         <LedgerWorkspace />
       </AuthProvider>
+      <Analytics />
     </MotionConfig>
   );
 }
